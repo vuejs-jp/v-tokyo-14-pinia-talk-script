@@ -43,40 +43,40 @@ That Pinia actually holds a state property that is just a ref of an empty object
 Because as soon as you start using your previously defined stores for the first time, it gets populated with whatever state you defined. For example, the first time you call useAuthStore, it will add an object with the initial state to pinia.state.value.auth. Any call to that function again will reuse that state and keep it alive for as long as the application stays open on your browser. And the same for any other useStore function you call.
 
 ### 17.
-And I think this simple idea of gathering all of your stores states in one single object is what makes Pinia so easy to extend. It’s what makes it easy to build integrations like devtools, SSR, and plugins. And it has been there from the very beginning of its creation.
+ストアの状態をすべてひとつのオブジェクトに集めるというシンプルなアイデアが、Piniaの拡張を容易にしていると思います。devtools、SSR、プラグインなどの統合を容易にしているのです。そしてそれは、Piniaが誕生した当初から存在しています。
 
 ### 18.
-And that was a long time ago. First Pinia version appeared before Vue 3, so it was only for Vue 2 + composition API. At the time, it hacked around the communication channels of Vuex and the Vue Devtools 5 to benefit from existing devtools and provide a real store experience.
+そしてそれはずいぶん前のことです。最初のPiniaのバージョンはVue 3の前に登場したので、Vue 2 + composition APIにしか対応していませんでした。当時は、VuexとVue Devtools 5の通信チャネルをハックして、既存のdevtoolsの恩恵を受け、実際のストアでの体験を提供していました。
 
 ### 19.
-In its initial version 1, Pinia used to call internal devtools functions, duplicate getters and actions for each useStore call due to the lack of the effectScope API that appeared just a few months ago. There was no plugin interface to extend the capabilities of stores and there was only one way to define stores by using an option api. In short, it was clearly an experiment and it wasn't production ready. It was all about the shape of the API and the Developer Experience using it. There was a big focus on TypeScript support and having everything working with SSR.
+初期のバージョン1では、ほんの数ヶ月前に登場したeffectScope APIがなかったため、Piniaは内部のdevtools関数を呼び出し、useStoreを呼び出すたびに重複したゲッターとアクションを使用していました。また、ストアの機能を拡張するためのプラグインインターフェースもなく、ストアを定義する方法は、オプションAPIを使用することのみでした。要するに、明らかに実験的なものであり、本番環境には対応していませんでした。重要なのは、APIの形とそれを使った開発者の体験でした。TypeScriptをサポートし、すべてをSSRで動作させることに大きな重点が置かれました。
 
 ### 20.
-Things have progressed a lot in the meanwhile. Not only we support both Vue 2 and Vue 3, we have an additional syntax to define stores that make them look closer to components, so very very familiar if you are already using the composition API. We have a testing module to make your life easier when testing components that are relying on stores. A Nuxt module that supports Nuxt 2, Bridge, and Nuxt 3. And last but not least, a very complete plugin interface that can be fully typed.
+この間に物事は大きく進展しました。Vue 2とVue 3の両方をサポートしているだけでなく、ストアを定義するための追加の構文があり、コンポーネントに近い形になっています。それは、すでにcompoistion APIを使っているなら、とてもとても馴染み深いものです。また、ストアに依存するコンポーネントをテストする際に、作業を容易にするテストモジュールも用意されています。Nuxt 2、Bridge、Nuxt 3をサポートするNuxtモジュール。そして最後に、完全に型付けできる非常に完成度の高いプラグインインターフェイスがあります。
 
 ### 21.
-On top of that, the very core of Pinia's API has inspired Vuex 5 API, and you can check that on the RFC itself. Which means that the definition of Stores and interaction with them is pretty much the same in both Pinia and Vuex. Making it easy to switch from one version to the other if necessary.
+さらに、PiniaのAPIの核心部分は、Vuex 5のAPIに影響を与えており、RFCで確認することができます。つまり、PiniaとVuexの両方で、Storeの定義とその相互作用はほぼ同じです。これにより、必要に応じて、一方のバージョンから他方のバージョンへの切り替えが容易になります。
 
 ### 22.
-In fact, the biggest changes between Vuex 4 and Pinia are the same as Vuex 4 and 5. In Vuex 4 you create a store with createStore and add mutations to it to be able to mutate the state.
+実は、Vuex 4とPiniaの最大の変更点は、Vuex 4と5と同じです。Vuex 4では、createStoreでストアを作成し、そこにmutationを追加して状態を変異させることができるようになっています。
 
 ### 24.
-In Vuex 5 and Pinia, you can directly mutate the state on the store. No more verbose and unnecessary mutations. But that's not the only way of mutating the state in Pinia.
+Vuex 5とPiniaでは、ストアの状態を直接変異させることができます。冗長で不必要なミューテーションはもう必要ありません。しかし、Piniaで状態を変異させる方法はそれだけではありません。
 
 ### 25.
-In Pinia, you can also use a `$patch` method to pass a partial version of the state to change. Or even pass a function to directly mutate the state.
+Piniaでは、`$patch`メソッドを使って、変更したい状態の部分的なバージョンを渡すこともできます。あるいは、状態を直接変異させる関数を渡すこともできます。
 
 ### 26.
-Which can be useful when dealing with collections like Sets, Maps, and arrays. This also allows grouping changes of the state so subscriptions to the stores only trigger once. Similar to watching multiple properties with an array.
+これは、セット、マップ、配列などのコレクションを扱うときに便利です。また、状態の変更をグループ化することで、ストアへのサブスクリプションが一度だけトリガーされるようになります。配列で複数のプロパティを監視するのと似ています。
 
 ### 27.
-This is especially useful in plugins where you can subscribe to store changes, store actions, and add any properties you want to every single store that is created.
-Plugins in pinia are just functions that receive a context object with the current running application, the Pinia object, the store the plugin is being applied to and the options used to define the store.
+これは、ストアの変更やストアのアクションを購読したり、作成されたすべてのストアに必要なプロパティを追加したりできるプラグインでは特に便利です。
+pinia のプラグインは、現在実行中のアプリケーション、Pinia オブジェクト、プラグインが適用されるストア、ストアの定義に使用されたオプションを含むコンテキストオブジェクトを受け取る関数です。
 
 ### 28.
-These are the main three things you do in a Pinia plugin. You subscribe to state changes. This is something that exists in Vuex as well. It gives you access to the type of change, the id of the store, a payload, depending on how the state was modifying, and the current state of the store in question.
-You can trigger special handling on actions before or after they run, when they fail, or even just cancel them.
-And finally, you can add any properties you want to the store. For example, you can add a reference to the router in every store by just returning those properties in the store. Then you just access it through this inside actions and getters or directly through store.router.
+Piniaプラグインでは、主に3つのことを行います。状態の変化を購読する。これは、Vuexにもあることです。変更の種類、ストアのID、状態の変更方法に応じたペイロード、問題のストアの現在の状態にアクセスできます。
+アクションが実行される前や後、失敗したとき、あるいはキャンセルしたときに、特別な処理を引き起こすことができます。
+そして最後に、ストアに任意のプロパティを追加することができます。例えば、ストア内のプロパティを返すだけで、すべてのストアにルーターへの参照を追加することができます。そして、アクションやゲッター、またはstore.routerから直接アクセスすることができます。
 
 ### 31.
 Here is a simple example of a plugin that sends errors happening in actions to an external service you might use like Sentry. These 4 lines of code is all you need to report back errors from your stores to detect bugs in production.
