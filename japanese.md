@@ -7,40 +7,46 @@ Every paragraph is dedicated to one slide.
 ## Transcript
 
 ### 1.
-Hi everyone my name is Eduardo, I’m a member of the Vue.js core team the author of the Vue Router and also a small library called Pinia, which is an alternative to Vuex designed around the composition API to deal with state management.
+みなさんこんにちは。私の名前はEduardoです。Vue.jsコアチームの一員で、Vue Routerの作者でもあります。また、PiniaというVuexの代わりに使えるcomposition API向けのちょっとした状態管理ライブラリも作っています。
 
 ### 2.
-But today, I don’t want to talk specifically about state management, I want to talk about what’s beyond that with Pinia. However, I can’t go beyond state management without talking about state management itself a little bit first.
+しかし今日は、特に状態管理については取り上げるつもりはありません。Piniaのこれからについてお話しするつもりです。
+ただし、最初に少し状態管理についての話をしなければその先に進められませんので少しお話ししようと思います。
 
 ### 3.
-is it just an object that you mutate with a few functions state management? Some people will tell you it is, and to be fair, they wouldn’t be totally wrong…
+いくつかの関数の状態管理で変更するのは単なるオブジェクトでしょうか？それが正しいという人もいますし、そして彼らは完全に間違っているわけではありません…
 
 ### 5.
-If you wrap that object with reactive we do have a valid state management that works seamlessly with Vue. And it isn’t that complex, isn’t it? The truth is, state management doesn’t have to be complex and can stay this simple for even bigger apps sometimes. There is this myth about state management that it should only be necessary with big or medium to big sized applications. This couldn't be further from the truth.
+そのオブジェクトを`reactive`で囲むと、Vueとシームレスに連動する有効な状態管理が可能になります。そんなに複雑じゃありませんよね？実のところ、状態管理は複雑である必要はなく、うまくやれば、さらに大きなアプリケーションでもシンプルに保つことが可能です。世の中には、アプリケーションが中規模以上になると状態管理が必要になってくるという神話がありますが、これは事実とはまったく違います。
 
 ### 6.
-State management is not about the size of your application or codebase. State management is about how you use the state across your application. Is your state outliving pages? Do you need the user information in many places? Do you need to the state of the shopping cart in multiple places in your complex nested tree of components? But today the question that I want to bring to your mind is what will make you go further and complexify your state management solution?
+状態管理はアプリケーションやコードベースの大きさによるものではありません。あなたが状態をアプリケーション全体でどのように使用するかによります。ページよりも長く状態が保持されていますか？たくさんの場所でユーザー情報が必要ですか？複雑にネストされたコンポーネントツリーの複数の場所からショッピングカートの状態が必要になりますか？
+しかし今日、私が皆さんにぜひ考えていただきたい問いかけは、何があなたに状態管理ソリューションを前進させ、また何がそれを複雑にさせているのか、ということです。
 
 ### 7.
-Because this solution works out pretty well for most cases so you might be reluctant to go a bit more complex by using a store so going beyond state management is obviously starting by using a store and you don’t always need or want one so it’s important to note that the difference between a bare-bones state management solution and a store like Pinia isn’t that big.
+オブジェクトを使ったソリューションはほとんどのケースでうまくいくので、ストアを使ってもう少し複雑なことをするのは気が進まないかもしれません。
+つまり、ここから状態管理を進化させるには当然ながらストアを使用することになりますが、実際のところストアが絶対に必要というわけではありません。
+ここで重要なのは、素の状態管理ソリューションとPiniaのようなストアの違いはそれほど大きくないということです。
 
 ### 8.
-In other words, do you actually need a store or can you keep using your state management solution that just uses a reactive object.
+言い換えれば、本当にストアが必要なのか、それともリアクティブなオブジェクトを使うだけの状態管理ソリューションを使い続けることができるのかということです。
 
 ### 9.
-And the truth is there are a few reasons to use a store because these centralize object that we are that we can use doesn’t really scale that well if we keep adding properties to the object. The first reason to use a store is Server Side Rendering. You will have to it yourself if you are doing SSR in your application and it’s just not worth it. Store also gives you a centralized place to store all the different states that you may have notification without having scaling issues. He brings you a much better developer experience by enabling devtools, hot module replacement, and leveraging existing plug-ins made by other Developers. It also easily enables mocking to unit test components that rely on stores, so overall a robust and battle tested solution.
+実際のところ、オブジェクトにプロパティを追加し続けると一元化されたオブジェクトは拡張性に欠けるために、ストアを使用する理由はいくつかあります。一つ目の理由は、サーバーサイドレンダリングです。アプリケーションでSSRを行う場合、状態管理を自前で行うことはまったく無駄な努力です。ストアを使えばスケーリングの問題なく通知されたすべての異なる状態を一括して保存する場所についても提供してくれます。またストアは、devtoolsやホットモジュールの交換を可能にし、他の開発者によって作られた既存のプラグインを活用することで、より優れた開発者体験を与えてくれます。さらにストアに依存するコンポーネントのユニットテストを行うためのモッキングも簡単に行うことができ、全体として堅牢かつ実用的なソリューションとなっています。
 
 ### 10.
-So what if we want to move from a simple state management solution to a store like Pinia? What is even Pinia? Let’s take the simple example but you might have all come across, it’s usually your main.js or main.TS file in a fresh project.
+では、単純な状態管理ソリューションからPiniaのようなストアに移行したい場合はどうでしょうか。まず、Piniaとは何でしょうか？
+全ての人が出くわす簡単な例を見てみましょう。これは新しいプロジェクトのmain.jsまたはmain.TSファイルです。
 
 ### 13.
-To start using Pinia you just need to create it and pass it to your application. That Pinia object is actually playing a central role in how state management works because it’s going to centralize all the different states that we’re going to have and it’s going to enable Devtools and SSR.
+Piniaは、インスタンスを作成してアプリケーションに渡すだけで使い始めることができます。
+そのPiniaオブジェクトは、状態管理がどのように機能するかにおいて実際に中心的な役割を果たしています。これは、これから行うさまざまな状態をすべて一元化し、DevtoolsとSSRを有効にするためです。
 
 ### 14.
-That Pinia actually holds a state property that is just a ref of an empty object, or rather initially empty object.
+そのPiniaは、実際には、空のオブジェクト、または最初は空のオブジェクトの単なる参照である状態プロパティを保持しています。
 
 ### 16.
-Because as soon as you start using your previously defined stores for the first time, it gets populated with whatever state you defined. For example, the first time you call useAuthStore, it will add an object with the initial state to pinia.state.value.auth. Any call to that function again will reuse that state and keep it alive for as long as the application stays open on your browser. And the same for any other useStore function you call.
+以前に定義したストアを初めて使用し始めるとすぐに、定義した状態が入力されます。たとえば、初回に `useAuthStore` を呼び出すと、初期状態のオブジェクトが `pinia.state.value.auth` に追加されます。その関数を再度呼び出すと、その状態が再利用され、アプリケーションがブラウザで開いている限り、その状態が維持されます。また、呼び出す他の `useStore` 関数についても同じです。
 
 ### 17.
 ストアの状態をすべてひとつのオブジェクトに集めるというシンプルなアイデアが、Piniaの拡張を容易にしていると思います。devtools、SSR、プラグインなどの統合を容易にしているのです。そしてそれは、Piniaが誕生した当初から存在しています。
